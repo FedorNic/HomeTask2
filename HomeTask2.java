@@ -164,34 +164,65 @@ public class HomeTask2 {
         return false; // Игра продолжается
     }
 
-    /**
-     * Проверка победы
-     */
     static boolean checkWin(char c) {
-        // for (int i = 0; i < fieldSizeX; i++) {
-        //     for (int j = 0; j < fieldSizeY; j++)
-        //         // Проверка по WIN_COUNT горизонталям
-        //         if (field[i][j] == c && fieldSizeY - i >= WIN_COUNT)
-        //             for (int k = i + 1; k < WIN_COUNT + 1; k++) {
-        //                 int win = 1;
+        for (int i = 0; i < fieldSizeX; i++) {
+            for (int j = 0; j < fieldSizeY; j++) {
+                // Ищем занятую точку
+                if (field[i][j] == c) {
 
-        //             }
-        // }
+                    // Проверяем наличие возможности выигрышной комбинации по горизонтали (хватит ли поля)
+                    if (fieldSizeY - i >= WIN_COUNT) {
+                        // Исходную точку не проверяем
+                        int win = 1;
+                        for (int k = i + 1; k <= WIN_COUNT; k++) {
+                            // Если следующая точка является частью комбинации - увеличиваем счетчик, иначе отбрасываем
+                            if (field[k][j] == c) win++;
+                            else break;
+                            // Проверка счетчика на соответствие длине выигрышной комбинации
+                            if (win == WIN_COUNT) return true;
+                        }
+                    }
 
-       // Проверка по трем горизонталям
-       if (field[0][0] == c && field[0][1] == c && field[0][2] == c) return true;
-       if (field[1][0] == c && field[1][1] == c && field[1][2] == c) return true;
-       if (field[2][0] == c && field[2][1] == c && field[2][2] == c) return true;
+                    // Проверяем наличие возможности выигрышной комбинации по вертикали (хватит ли поля)
+                    if (fieldSizeX - j >= WIN_COUNT) {
+                        int win = 1;
+                        for (int k = j + 1; k <= WIN_COUNT; k++) {
+                            // Если следующая точка является частью комбинации - увеличиваем счетчик, иначе отбрасываем
+                            if (field[i][k] == c) win++;
+                            else break;
+                            // Проверка счетчика на соответствие длине выигрышной комбинации
+                            if (win == WIN_COUNT) return true;
+                        }
+                    }
 
-       // Проверка по диагоналям
-       if (field[0][0] == c && field[1][1] == c && field[2][2] == c) return true;
-       if (field[0][2] == c && field[1][1] == c && field[2][0] == c) return true;
+                    // Проверяем наличие возможности выигрышной комбинации по первой диагонали (хватит ли поля)
+                    if (fieldSizeY - i >= WIN_COUNT && fieldSizeX - j >= WIN_COUNT) {
+                        int win = 1;
+                        for (int k = i + 1; k <= WIN_COUNT; k++) {
+                            // Если следующая точка является частью комбинации - увеличиваем счетчик, иначе отбрасываем
+                            j++;
+                            if (field[k][j] == c) win++;
+                            else break;
+                            // Проверка счетчика на соответствие длине выигрышной комбинации
+                            if (win == WIN_COUNT) return true;
+                        }
+                    }
 
-       // Проверка по трем вертикалям
-       if (field[0][0] == c && field[1][0] == c && field[2][0] == c) return true;
-       if (field[0][1] == c && field[1][1] == c && field[2][1] == c) return true;
-       if (field[0][2] == c && field[1][2] == c && field[2][2] == c) return true;
-
+                    // Проверяем наличие возможности выигрышной комбинации по второй диагонали (хватит ли поля)
+                    if (i + 1 >= WIN_COUNT && fieldSizeX - j >= WIN_COUNT) {
+                        int win = 1;
+                        for (int k = i - 1; k >= i - WIN_COUNT + 1; k--) {
+                            // Если следующая точка является частью комбинации - увеличиваем счетчик, иначе отбрасываем
+                            j++;
+                            if (field[k][j] == c) win++;
+                            else break;
+                            // Проверка счетчика на соответствие длине выигрышной комбинации
+                            if (win == WIN_COUNT) return true;
+                        }
+                    }
+                }
+            }
+        }
         return false;
     }
 
